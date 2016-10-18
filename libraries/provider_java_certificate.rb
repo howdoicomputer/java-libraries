@@ -75,7 +75,7 @@ class Chef::Provider::JavaCertificate < Chef::Provider::LWRPBase
       certfile = "#{Chef::Config[:file_cache_path]}/#{certalias}.cert.#{hash}"
       unless ::File.exists?(certfile)
           
-          result = `#{keytool} -list -keystore #{truststore} -storepass #{truststore_passwd} -v`
+          result = `#{keytool} -list -keystore #{truststore} -storepass #{truststore_passwd} -v`.scrub
           Chef::Log.debug("Executing: #{keytool} -list -keystore #{truststore} -storepass #{truststore_passwd} -v | grep \"#{certalias}\"\n#{result}")
           Chef::Application.fatal!("Error querying keystore for existing certificate: #{$?}", $?.to_s[/exit (\d+)/, 1].to_i) unless $?.success?
           
